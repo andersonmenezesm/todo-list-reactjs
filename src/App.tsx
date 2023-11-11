@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from './components/Header/index';
 import { Tasks } from './components/Tasks';
 
+const LOCAL_STORAGE_KEY = "todo:savedTasks"
 export interface TaskProps {
   id: string
   title: string
@@ -11,8 +12,24 @@ export interface TaskProps {
 export function App() {
   const [tasks, setTasks] = useState<TaskProps[]>([])
 
+  function setTasksAndSave(newTasks: TaskProps[]) {
+    setTasks(newTasks)
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks))
+  }
+
+  function loadSavedTasks() {
+    const savedTasks = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if(savedTasks) {
+      setTasks(JSON.parse(savedTasks))
+    }
+  }
+
+  useEffect(() => {
+    loadSavedTasks()
+  }, [])
+
   function createNewTask(taskTitle: string) {
-    setTasks([
+    setTasksAndSave([
       ...tasks,
       {
         id: crypto.randomUUID(),
@@ -24,7 +41,7 @@ export function App() {
 
   function deleteTaskById(taskId: string) {
     const newTasks = tasks.filter(task => task.id !== taskId)
-    setTasks(newTasks)
+    setTasksAndSave(newTasks)
   }
 
   function toggleTaskCompletedById(taskId: string) {
@@ -37,7 +54,7 @@ export function App() {
       }
       return task
     })
-    setTasks(newTasks)
+    setTasksAndSave(newTasks)
   }
 
   return (

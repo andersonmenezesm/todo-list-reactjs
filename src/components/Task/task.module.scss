@@ -40,9 +40,22 @@
     text-decoration: line-through;
   }
 
-  .deleteButton {
-    background: none;
-    border: none;
-    color: var(--gray-300);
+  .actionsTask {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    
+    button {
+      background: none;
+      border: none;
+      color: var(--gray-300);
+    }
+    
+    .deleteButton {
+      :hover {
+        color: var(--danger);
+      }
+    }
   }
+
 }

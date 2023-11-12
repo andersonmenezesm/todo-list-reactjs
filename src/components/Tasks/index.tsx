@@ -1,5 +1,6 @@
 import { TbClipboardText } from 'react-icons/tb'
 import { TaskProps } from '../../App'
+import { Input } from '../Input'
 import { Task } from '../Task'
 import styles from './tasks.module.scss'
 
@@ -7,11 +8,14 @@ interface Props {
   tasks: TaskProps[],
   onDelete: (taskId: string) => void
   onCompleted: (taskId: string) => void
+  onChangeTaskTitle: (taskId: string) => void
 }
 
-export function Tasks({ tasks, onDelete, onCompleted }: Props) {
+export function Tasks({ tasks, onDelete, onCompleted, onChangeTaskTitle }: Props) {
   const taskQuantity = tasks.length
   const doneTasks = tasks.filter(task => task.isDone).length;
+
+  const isChangeTaskInput = false
 
   return (
     <>
@@ -30,12 +34,14 @@ export function Tasks({ tasks, onDelete, onCompleted }: Props) {
 
         <div className={styles.todoList}>
           {tasks.map(task => (
+            !isChangeTaskInput ? 
             <Task
               key={task.id}
               task={task}
               onDelete={onDelete}
               onCompleted={onCompleted}
-            />
+              onChangeTaskTitle={onChangeTaskTitle}
+            /> : <Input />
           ))}
 
           {tasks.length <= 0 && (

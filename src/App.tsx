@@ -39,6 +39,19 @@ export function App() {
     ])
   }
 
+  function changeTaskTitle(taskId: string, taskTitle: string) {
+    const newTasks = tasks.map(task => {
+      if(task.id === taskId) {
+        return {
+          ...task,
+          title: taskTitle,
+        }
+      }
+      return task
+    })
+    setTasksAndSave(newTasks)
+  } 
+
   function deleteTaskById(taskId: string) {
     const newTasks = tasks.filter(task => task.id !== taskId)
     setTasksAndSave(newTasks)
@@ -64,6 +77,7 @@ export function App() {
         tasks={tasks}
         onDelete={deleteTaskById}
         onCompleted={toggleTaskCompletedById}
+        onChangeTaskTitle={changeTaskTitle}
       />
     </>
   )
